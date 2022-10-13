@@ -1,0 +1,45 @@
+!include rcic-package.yaml
+!include rpm.yaml
+---
+- package: Rosetta Protein modeling 
+  name: rosetta 
+  versions: !include versions.yaml
+  version: "{{versions.rosetta.version}}"
+  vendor_source: "https://www.rosettacommons.org/software"
+  compiler: "{{versions.compiler.name}}"  
+  compiler_version: "{{versions.compiler.version}}"  
+
+  description: |
+    The Rosetta software (version {{version}} suite includes algorithms 
+    for computational modeling and analysis of protein structures. It 
+    has enabled notable scientific advances in computational biology, 
+    including de novo protein design, enzyme design, ligand docking, and 
+    structure prediction of biological macromolecules and macromolecular 
+    complexes.
+    Rosetta is available to all non-commercial users for free and 
+    to commercial users for a fee
+
+  src_tarball: "{{name}}{{versions.rosetta.tarext}}"
+  src_dir: "{{name}}{{versions.rosetta.srcdir}}"
+  workdir: main/source
+  settings: "{{workdir}}/tools/build/basic.settings"
+  build:
+    ## Patch their basic settings file to support external hdf5, then
+    ## fill with specifics of hdf5 module loaded
+    patchfile: "{{name}}.patch"
+    munge: >
+       /bin/sed -i -e "s@%MARCH%@{{versions.rosetta.march}}@" \
+             -e "s@%HDF5_HOME%@$$HDF5_HOME@g" {{settings}}
+    pkgmake: "{{build.munge}}; (cd {{workdir}}; ./scons.py -j8 mode=release extras=hdf5 bin)"
+    modules: 
+      - "{{compiler}}/{{compiler_version}}"
+      - hdf5/{{versions.site.hdf5}}/{{compiler}}.{{compiler_version}}
+  install:
+    ## Doesn't have a make install/scons install target, do the work ourselves
+    makeinstall: >
+      echo Installing binaries;
+      mkdir -p $(ROOT){{root}}/bin;
+      find -L {{workdir}}/bin -type f -exec install -m755  {} $(ROOT){{root}}/bin \; -print;  
+      echo Installing libraries;
+      mkdir -p $(ROOT){{root}}/lib;
+      find {{workdir}}/build/src/release {{workdir}}/build/external/release -name lib\*so -exec install -m755  {} $(ROOT){{root}}/lib \; -print  

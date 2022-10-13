@@ -1,0 +1,6 @@
+site: !include site.yaml
+build:
+  - rosetta 
+  - rosetta-module 
+manifest:
+  - "{{build}}"

@@ -1,0 +1,15 @@
+!include rosetta.yaml
+!include rcic-module.yaml
+---
+- package: rosetta module
+  category: BIOTOOLS
+  release: 1
+  module:
+    setenv:
+      - ROSETTA_HOME {{root}}
+      - ROSETTA_DATA {{versions.rosetta.sharedpath}}/{{name}}/{{version}}
+    prepend_path: 
+      - PATH {{root}}/bin
+      - LD_LIBRARY_PATH {{root}}/lib
+    prereq:
+      - "{{build.modules}}"

@@ -1,0 +1,11 @@
+---
+site: !include updates8.yaml
+rosetta:
+  version: "3.13" 
+  srcdir: "_src_2021.16.61629_bundle"
+  tarext: "_src_3.13_bundle.tgz"
+  march: "skylake"
+  sharedpath: /dfs6/commondata
+compiler:
+  name: gcc
+  version: system

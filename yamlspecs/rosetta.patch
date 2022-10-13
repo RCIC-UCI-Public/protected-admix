@@ -1,0 +1,30 @@
+*** rosetta_src_2021.16.61629_bundle/main/source/tools/build/basic.settings	2021-04-20 13:58:07.000000000 -0700
+--- rosetta_src_2021.16.61629_bundle_new/main/source/tools/build/basic.settings	2022-10-12 15:21:56.048096910 -0700
+***************
+*** 249,255 ****
+                  # XXX: march=k8 is (?) the default.  There may be a speedup
+                  # XXX: with =nocona on Intel EM64T or =opteron on Opteron.
+                  "compile" : [
+!                     "march=core2",
+                      "mtune=generic",
+                  ],
+              },
+--- 249,255 ----
+                  # XXX: march=k8 is (?) the default.  There may be a speedup
+                  # XXX: with =nocona on Intel EM64T or =opteron on Opteron.
+                  "compile" : [
+!                     "march=%MARCH%",
+                      "mtune=generic",
+                  ],
+              },
+***************
+*** 918,923 ****
+--- 918,925 ----
+          "appends" : {
+              "defines" : [ "USEHDF5" ],
+              "libraries" : [ "libhdf5", "libhdf5_cpp", "libhdf5_hl", "libhdf5_hl_cpp"],
++             "include_path" : [ "%HDF5_HOME%/include" ],
++             "library_path" : [ "%HDF5_HOME%/lib" ],
+          },
+      },
+  
