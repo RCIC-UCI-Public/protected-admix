@@ -33,7 +33,7 @@
     pkgmake: "{{build.munge}}; (cd {{workdir}}; ./scons.py -j8 mode=release extras=hdf5 bin)"
     modules: 
       - "{{compiler}}/{{compiler_version}}"
-      - hdf5/{{versions.site.hdf5}}/{{compiler}}.{{compiler_version}}
+      - hdf5/{{versions.hdf5}}/{{compiler}}.{{compiler_version}}
   install:
     ## Doesn't have a make install/scons install target, do the work ourselves
     makeinstall: >
