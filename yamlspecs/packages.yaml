@@ -1,4 +1,6 @@
 site: !include site.yaml
+system:
+  - libatomic
 build:
   - rosetta 
   - rosetta-module 
