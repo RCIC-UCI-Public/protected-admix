@@ -2,5 +2,9 @@ site: !include site.yaml
 build:
   - rosetta 
   - rosetta-module 
+  - qe
+  - qe-module
+  - qe-cuda
+  - qe-cuda-module
 manifest:
   - "{{build}}"

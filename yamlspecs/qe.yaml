@@ -1,0 +1,52 @@
+!include rcic-package.yaml
+!include rpm.yaml
+---
+- package: qe
+  name: qe 
+  fullname: quantumespresso
+  versions: !include versions.yaml
+  version: "{{versions.qe}}"
+  vendor_source: https://www.quantum-espresso.org
+# src_tarball: "{{name}}-{{version}}.{{extension}}"
+# src_dir: "{{name}}-{{version}}"
+  basefamily: "{{name}}_{{version}}_{{compiler}}_{{compiler_version}}"
+  baserpm: "{{basefamily}}"
+  root: "{{pkg_defaults.app_path}}/{{name}}/{{version}}/{{compiler}}/{{compiler_version}}"
+  description: |
+    QuantumEspresso {{version}} is an integrated suite of Open-Source computer codes
+    for electronic-structure calculations and materials modeling at the nanoscale.
+    It is based on density-functional theory, plane waves, and pseudopotentials.
+    See https://www.quantum-espresso.org
+  compiler: "{{versions.compiler_intel.name}}"
+  compiler_version: "{{versions.compiler_intel.version}}"
+  mpi: "{{versions.mpi.name}}"
+  mpi_version: "{{versions.mpi.version}}"
+  addfile:
+    - filter-requires-{{name}}.sh
+  USECUDA: OFF
+  QEOPTIONS: -DQE_ENABLE_OPENMP=ON -DQE_ENABLE_CUDA={{USECUDA}}
+  build:
+    configure: >
+      (mkdir builddir;
+      cd builddir;
+      cmake -DCMAKE_C_COMPILER=mpicc -DCMAKE_Fortran_COMPILER=mpif90 {{QEOPTIONS}} ..)
+    configure_args:
+    addmodules:
+    base_modules: 
+      - "{{mpi}}/{{mpi_version}}/{{compiler}}.{{compiler_version}}"
+      - "{{build.addmodules}}"
+    modules: 
+      - foundation/{{versions.foundation}}
+      - "{{build.base_modules}}"
+    pkgmake: make -C builddir -j 8
+  extras: License
+  install:
+    makeinstall: >
+      cd builddir; 
+      cmake -DCMAKE_INSTALL_PREFIX=$(ROOT){{root}} -P cmake_install.cmake
+    installextra: for x in {{extras}}; do $(INSTALL) -m 644 ../$$x $(ROOT){{root}}; done
+  rpmFilters: *filterRequires
+  addrequires:
+  requires:
+    - "{{mpi}}_{{mpi_version}}_{{compiler}}_{{compiler_version}}"
+    - "{{addrequires}}"

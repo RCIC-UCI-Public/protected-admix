@@ -1,0 +1,13 @@
+!include qe.yaml
+---
+- package: quantumespressos-cuda
+  cuda: cudasdk
+  cuda_version: "{{versions.cudasdk}}"
+  cuda_module: "{{cuda}}/{{cuda_version}}"
+  basefamily: "{{name}}_{{version}}"
+  baserpm: "{{basefamily}}_cudasdsk_{{cuda_version}}"
+  root: "{{pkg_defaults.app_path}}/{{name}}/{{version}}/{{cuda}}/{{cuda_version}}"
+  USECUDA: ON
+  build:
+    addmodules: 
+      - "{{cuda_module}}"

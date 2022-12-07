@@ -1,5 +1,6 @@
+!include site.yaml
+!include updates8.yaml
 ---
-site: !include updates8.yaml
 rosetta:
   version: "3.13" 
   srcdir: "_src_2021.16.61629_bundle"
@@ -9,3 +10,5 @@ rosetta:
 compiler:
   name: gcc
   version: system
+qe: "7.1"
+cudasdk: "22.9"
