@@ -7,8 +7,7 @@ rosetta:
   tarext: "_src_3.13_bundle.tgz"
   march: "skylake"
   sharedpath: /dfs6/commondata
-compiler:
-  name: gcc
-  version: system
-qe: "7.1"
-cudasdk: "22.9"
+qe:
+  version: "7.1"
+  cudasdk: "22.9"
+scalapack: "2.1.0"

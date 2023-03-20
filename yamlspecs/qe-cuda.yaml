@@ -2,12 +2,15 @@
 ---
 - package: quantumespressos-cuda
   cuda: cudasdk
-  cuda_version: "{{versions.cudasdk}}"
-  cuda_module: "{{cuda}}/{{cuda_version}}"
+  cuda_version: "{{versions.qe.cudasdk}}"
+  compiler: "{{versions.compiler_intel.name}}"
+  compiler_version: "{{versions.compiler_intel.version}}"
+  mpi: "{{versions.mpi.name}}"
+  mpi_version: "{{versions.mpi.version}}"
   basefamily: "{{name}}_{{version}}"
   baserpm: "{{basefamily}}_{{cuda}}_{{cuda_version}}"
   root: "{{pkg_defaults.app_path}}/{{name}}/{{version}}/{{cuda}}/{{cuda_version}}"
   USECUDA: ON
   build:
     addmodules: 
-      - "{{cuda_module}}"
+      - cudasdk/{{cuda_version}}

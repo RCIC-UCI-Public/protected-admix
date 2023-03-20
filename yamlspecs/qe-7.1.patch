@@ -1,0 +1,32 @@
+--- qe-7.1/LAXlib/ptoolkit.f90.orig	2023-03-10 16:04:55.878812746 -0800
++++ qe-7.1/LAXlib/ptoolkit.f90	2023-03-10 16:34:32.489679689 -0800
+@@ -5554,9 +5554,11 @@
+     END DO
+ 
+     ! split communicator is present and must be freed on all processors
+-    CALL mpi_comm_free( col_comm, ierr )
+-    IF( ierr /= 0 ) &
+-          CALL lax_error__( " pztrtri ", " in mpi_comm_free 25 ", ABS( ierr ) )
++    IF( col_comm /= MPI_COMM_NULL ) THEN
++      CALL mpi_comm_free( col_comm, ierr )
++      IF( ierr /= 0 ) &
++            CALL lax_error__( " pztrtri ", " in mpi_comm_free 25 ", ABS( ierr ) )
++    END IF
+ 
+     DEALLOCATE(B)
+     DEALLOCATE(C)
+@@ -5929,9 +5931,11 @@
+     END DO
+ 
+     ! split communicator is present and must be freed on all processors
+-    CALL mpi_comm_free( col_comm, ierr )
+-    IF( ierr /= 0 ) &
+-          CALL lax_error__( " pdtrtri ", " in mpi_comm_free 25 ", ABS( ierr ) )
++    IF( col_comm /= MPI_COMM_NULL ) THEN
++      CALL mpi_comm_free( col_comm, ierr )
++      IF( ierr /= 0 ) &
++            CALL lax_error__( " pdtrtri ", " in mpi_comm_free 25 ", ABS( ierr ) )
++    END IF
+ 
+     DEALLOCATE(B)
+     DEALLOCATE(C)

@@ -3,9 +3,10 @@
 ---
 - package: qe
   name: qe 
+  release: 2
   fullname: quantumespresso
   versions: !include versions.yaml
-  version: "{{versions.qe}}"
+  version: "{{versions.qe.version}}"
   vendor_source: https://www.quantum-espresso.org
 # src_tarball: "{{name}}-{{version}}.{{extension}}"
 # src_dir: "{{name}}-{{version}}"
@@ -17,8 +18,8 @@
     for electronic-structure calculations and materials modeling at the nanoscale.
     It is based on density-functional theory, plane waves, and pseudopotentials.
     See https://www.quantum-espresso.org
-  compiler: "{{versions.compiler_intel.name}}"
-  compiler_version: "{{versions.compiler_intel.version}}"
+  compiler: "{{versions.compiler.name}}"
+  compiler_version: "{{versions.compiler.version}}"
   mpi: "{{versions.mpi.name}}"
   mpi_version: "{{versions.mpi.version}}"
   addfile:
@@ -26,12 +27,17 @@
   USECUDA: OFF
   QEOPTIONS: -DQE_ENABLE_OPENMP=ON -DQE_ENABLE_CUDA={{USECUDA}}
   build:
+    patchfile: "{{name}}-{{version}}.patch"
     configure: >
       (mkdir builddir;
       cd builddir;
       cmake -DCMAKE_C_COMPILER=mpicc -DCMAKE_Fortran_COMPILER=mpif90 {{QEOPTIONS}} ..)
     configure_args:
     addmodules:
+      - OpenBLAS/{{versions.OpenBLAS}}
+      - scalapack/{{versions.scalapack}}
+      - fftw/{{versions.fftw}}/{{compiler}}.{{compiler_version}}
+      - hdf5/{{versions.hdf5}}/{{compiler}}.{{compiler_version}}-{{mpi}}.{{mpi_version}}
     base_modules: 
       - "{{mpi}}/{{mpi_version}}/{{compiler}}.{{compiler_version}}"
       - "{{build.addmodules}}"
@@ -43,10 +49,16 @@
   install:
     makeinstall: >
       cd builddir; 
-      cmake -DCMAKE_INSTALL_PREFIX=$(ROOT){{root}} -P cmake_install.cmake
+      cmake -DCMAKE_INSTALL_PREFIX=$(ROOT){{root}} -P cmake_install.cmake;
+      for x in $$(find bin -type f); do install $$x $(ROOT){{root}}/bin; done;
+      for x in $$(find lib -type f); do install $$x $(ROOT){{root}}/lib64; done
     installextra: for x in {{extras}}; do $(INSTALL) -m 644 ../$$x $(ROOT){{root}}; done
   rpmFilters: *filterRequires
   addrequires:
   requires:
     - "{{mpi}}_{{mpi_version}}_{{compiler}}_{{compiler_version}}"
     - "{{addrequires}}"
+
+# https://gitlab.com/QEF/q-e/-/wikis/Developers/CMake-build-system
+# For a patch see an old post https://lists.quantum-espresso.org/pipermail/users/2019-December/043775.html
+# have to modify as the qe version and src file have changed
