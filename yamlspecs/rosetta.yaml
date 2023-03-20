@@ -6,8 +6,8 @@
   versions: !include versions.yaml
   version: "{{versions.rosetta.version}}"
   vendor_source: "https://www.rosettacommons.org/software"
-  compiler: "{{versions.compiler.name}}"  
-  compiler_version: "{{versions.compiler.version}}"  
+  compiler: "{{versions.compiler_sys.name}}"
+  compiler_version: "{{versions.compiler_sys.version}}"
 
   description: |
     The Rosetta software (version {{version}} suite includes algorithms 
