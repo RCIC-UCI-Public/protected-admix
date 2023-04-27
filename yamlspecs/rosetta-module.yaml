@@ -3,11 +3,14 @@
 ---
 - package: rosetta module
   category: BIOTOOLS
-  release: 1
+  release: 3
+  sharedpath: "{{versions.rosetta.sharedpath}}/{{name}}/{{version}}"
   module:
     setenv:
       - ROSETTA_HOME {{root}}
-      - ROSETTA_DATA {{versions.rosetta.sharedpath}}/{{name}}/{{version}}
+      - ROSETTA_DATA {{sharedpath}}
+      - ROSETTA3_DB {{sharedpath}}/database
+      - ROSETTA3_TOOLS {{sharedpath}}/tools
     prepend_path: 
       - PATH {{root}}/bin
       - LD_LIBRARY_PATH {{root}}/lib
