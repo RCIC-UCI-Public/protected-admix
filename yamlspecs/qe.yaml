@@ -29,7 +29,8 @@
   build:
     patchfile: "{{name}}-{{version}}.patch"
     configure: >
-      (mkdir builddir;
+      (chown root:root external/wannier90;
+      mkdir builddir;
       cd builddir;
       cmake -DCMAKE_C_COMPILER=mpicc -DCMAKE_Fortran_COMPILER=mpif90 {{QEOPTIONS}} ..)
     configure_args:
@@ -62,3 +63,4 @@
 # https://gitlab.com/QEF/q-e/-/wikis/Developers/CMake-build-system
 # For a patch see an old post https://lists.quantum-espresso.org/pipermail/users/2019-December/043775.html
 # have to modify as the qe version and src file have changed
+# 2024-11-26 See ../README.md
