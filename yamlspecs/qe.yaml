@@ -43,7 +43,7 @@
       - "{{mpi}}/{{mpi_version}}/{{compiler}}.{{compiler_version}}"
       - "{{build.addmodules}}"
     modules: 
-      - foundation/{{versions.foundation}}
+      - cmake/{{versions.cmake}}
       - "{{build.base_modules}}"
     pkgmake: make -C builddir -j 8
   extras: License
