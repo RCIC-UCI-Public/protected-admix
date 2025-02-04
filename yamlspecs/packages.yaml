@@ -1,4 +1,4 @@
-site: !include site.yaml
+---
 system:
   - libatomic
 build:
