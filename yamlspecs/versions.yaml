@@ -1,6 +1,7 @@
 !include site.yaml
 !include updates8.yaml
 ---
+admix: protected-admix
 rosetta:
   version: "3.13" 
   srcdir: "_src_2021.16.61629_bundle"
