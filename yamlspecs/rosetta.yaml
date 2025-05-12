@@ -7,7 +7,8 @@
   version: "{{versions.rosetta.version}}"
   vendor_source: "https://www.rosettacommons.org/software"
   compiler: "{{versions.compiler_sys.name}}"
-  compiler_version: "{{versions.compiler_sys.version}}"
+  compiler_version: !eval "'{{versions.compiler_sys.version}}' if {{versions.os_release}} <= 8 else '8.4.0'"
+
 
   description: |
     The Rosetta software (version {{version}} suite includes algorithms 
