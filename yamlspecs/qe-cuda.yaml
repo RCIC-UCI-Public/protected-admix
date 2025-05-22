@@ -12,5 +12,5 @@
   root: "{{pkg_defaults.app_path}}/{{name}}/{{version}}/{{cuda}}/{{cuda_version}}"
   USECUDA: ON
   build:
-    addmodules: 
+    addmodules:
       - cudasdk/{{cuda_version}}

@@ -11,7 +11,7 @@
       - ROSETTA_DATA {{sharedpath}}
       - ROSETTA3_DB {{sharedpath}}/database
       - ROSETTA3_TOOLS {{sharedpath}}/tools
-    prepend_path: 
+    prepend_path:
       - PATH {{root}}/bin
       - LD_LIBRARY_PATH {{root}}/lib
     prereq:

@@ -1,25 +1,19 @@
 !include rcic-package.yaml
 !include rpm.yaml
 ---
-- package: Rosetta Protein modeling 
-  name: rosetta 
+- package: Rosetta Protein modeling
+  name: rosetta
   versions: !include versions.yaml
   version: "{{versions.rosetta.version}}"
   vendor_source: "https://www.rosettacommons.org/software"
   compiler: "{{versions.compiler_sys.name}}"
   compiler_version: !eval "'{{versions.compiler_sys.version}}' if {{versions.os_release}} <= 8 else '8.4.0'"
-
-
   description: |
-    The Rosetta software (version {{version}} suite includes algorithms 
-    for computational modeling and analysis of protein structures. It 
-    has enabled notable scientific advances in computational biology, 
-    including de novo protein design, enzyme design, ligand docking, and 
-    structure prediction of biological macromolecules and macromolecular 
-    complexes.
-    Rosetta is available to all non-commercial users for free and 
-    to commercial users for a fee
-
+    The Rosetta software suite. Includes algorithms for computational
+    modeling and analysis of protein structures. It has enabled notable
+    scientific advances in computational biology, including de novo
+    protein design, enzyme design, ligand docking, and structure
+    prediction of biological macromolecules and macromolecular complexes.
   src_tarball: "{{name}}{{versions.rosetta.tarext}}"
   src_dir: "{{name}}{{versions.rosetta.srcdir}}"
   workdir: main/source
@@ -32,7 +26,7 @@
        /bin/sed -i -e "s@%MARCH%@{{versions.rosetta.march}}@" \
              -e "s@%HDF5_HOME%@$$HDF5_HOME@g" {{settings}}
     pkgmake: "{{build.munge}}; (cd {{workdir}}; ./scons.py -j8 mode=release extras=hdf5 bin)"
-    modules: 
+    modules:
       - "{{compiler}}/{{compiler_version}}"
       - hdf5/{{versions.hdf5}}/{{compiler}}.{{compiler_version}}
   install:
@@ -40,7 +34,7 @@
     makeinstall: >
       echo Installing binaries;
       mkdir -p $(ROOT){{root}}/bin;
-      find -L {{workdir}}/bin -type f -exec install -m755  {} $(ROOT){{root}}/bin \; -print;  
+      find -L {{workdir}}/bin -type f -exec install -m755  {} $(ROOT){{root}}/bin \; -print;
       echo Installing libraries;
       mkdir -p $(ROOT){{root}}/lib;
-      find {{workdir}}/build/src/release {{workdir}}/build/external/release -name lib\*so -exec install -m755  {} $(ROOT){{root}}/lib \; -print  
+      find {{workdir}}/build/src/release {{workdir}}/build/external/release -name lib\*so -exec install -m755  {} $(ROOT){{root}}/lib \; -print

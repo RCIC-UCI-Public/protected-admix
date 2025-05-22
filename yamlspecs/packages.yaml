@@ -2,8 +2,8 @@
 system:
   - libatomic
 build:
-  - rosetta 
-  - rosetta-module 
+  - rosetta
+  - rosetta-module
   - qe
   - qe-module
   - qe-cuda
