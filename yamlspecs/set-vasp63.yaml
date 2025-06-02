@@ -1,0 +1,12 @@
+!include packages.yaml
+---
+versions: versions-vasp63.yaml
+bootstrap:
+build:
+  - vasp63
+  - vasp63-module
+  - vasp63-cuda
+  - vasp63-cuda-module
+manifest:
+  - vasp63-module
+  - vasp63-cuda-module

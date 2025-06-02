@@ -1,0 +1,22 @@
+!include vasp63-cuda.yaml
+!include rcic-module.yaml
+---
+- category: ENGINEERING
+  cuda: cudasdk
+  root: "{{versions.nfspath}}/{{name}}/{{version}}"
+  cuda_version: "{{versions.cudasdk}}"
+  baserpm: "{{name}}_{{version}}_{{cuda}}_{{cuda_version}}"
+  module:
+    path: "{{mod_defaults.path}}/{{version}}"
+    logname: "{{name}}/{{version}}/{{cuda}}.{{cuda_version}}"
+    name: "{{cuda}}.{{cuda_version}}"
+    prepend_path:
+      - PATH {{root}}/cuda/bin
+    setenv:
+      - "{{versions.vasp_gpu.addenv}}"
+    prereq:
+      - "{{build.base_modules}}"
+    requires:
+      - rcic-module-support
+      - "{{module.prereq}}"
+      - "{{versions.vasp.addreqs}}"

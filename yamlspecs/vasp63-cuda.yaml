@@ -1,0 +1,28 @@
+!include vasp63.yaml
+---
+- package: vasp-cuda
+  baserpm: "{{name}}_{{version}}_cudasdk_{{versions.cudasdk}}"
+  root: "{{parent}}/{{version}}/cuda"
+  addfile:
+    - "{{versions.vasp.patches_gpu}}" 
+    - filter-requires-vasp63-cuda.sh 
+  build:
+    base_modules:
+      - cudasdk/{{versions.cudasdk}}
+      - "{{versions.compiler_intel.name}}/{{versions.compiler_intel.version}}"
+      - hdf5/{{versions.hdf5}}/cudasdk.{{versions.cudasdk}}
+    modules:
+      - "{{build.base_modules}}"
+    pkgmake: >
+      cp arch/makefile.include.nvhpc_ompi_mkl_omp_acc makefile.include;
+      (for i in {{versions.vasp.patches_gpu}}; do patch -p0 < ../$$i ; done);
+      unset MAKEFLAGS; make DEPS=1 all
+  requires:
+      - cudasdk/{{versions.cudasdk}}
+      - "{{versions.compiler_intel.name}}/{{versions.compiler_intel.version}}"
+      - hdf5/{{versions.hdf5}}/cudasdk.{{versions.cudasdk}}
+  rpmFilters: *filterRequires
+
+#module load cudasdk/22.9 
+#module load intel/2022.2 
+#module load hdf5/1.13.1/cudasdk.22.9 

@@ -1,0 +1,50 @@
+--- makefile.include	2025-05-27 13:10:58.481379445 -0700
++++ ../makefile.include.vasp6	2025-05-27 13:11:37.093378900 -0700
+@@ -9,6 +9,8 @@
+              -Dtbdyn \
+              -Dfock_dblbuf
+ 
++CPP_OPTIONS += -DLAPACK36
++
+ CPP        = gcc -E -P -C -w $*$(FUFFIX) >$*$(SUFFIX) $(CPP_OPTIONS)
+ 
+ FC         = mpif90
+@@ -21,17 +23,12 @@
+ OFLAG_IN   = $(OFLAG)
+ DEBUG      = -O0
+ 
+-LIBDIR     = /opt/gfortran/libs/
+-BLAS       = -L$(LIBDIR) -lrefblas
+-LAPACK     = -L$(LIBDIR) -ltmglib -llapack
+-BLACS      = 
+-SCALAPACK  = -L$(LIBDIR) -lscalapack $(BLACS)
+-
+-LLIBS      = $(SCALAPACK) $(LAPACK) $(BLAS)
+-
+-FFTW       ?= /opt/gfortran/fftw-3.3.6-GCC-5.4.1
+-LLIBS      += -L$(FFTW)/lib -lfftw3
+-INCS       = -I$(FFTW)/include
++BLAS       = -L$(LAPACK_DIR)/lib -lrefblas
++LAPACK     = -L$(LAPACK_DIR)/lib -ltmglib -llapack
++SCALAPACK  = -L$(SCALAPACK_DIR)/lib -lscalapack
++FFTW3      = -L$(FFTW_LIB) -lfftw3
++LLIBS      = $(SCALAPACK) $(LAPACK) $(BLAS) $(FFTW3)
++INCS       = -I$(FFTW_INC)
+ 
+ OBJECTS    = fftmpiw.o fftmpi_map.o  fftw3d.o  fft3dlib.o
+ 
+@@ -68,7 +65,7 @@
+ CXX        = g++
+ CFLAGS     = -fPIC -DADD_ -openmp -DMAGMA_WITH_MKL -DMAGMA_SETAFFINITY -DGPUSHMEM=300 -DHAVE_CUBLAS
+ 
+-CUDA_ROOT  ?= /usr/local/cuda
++CUDA_ROOT  = $(CUDA_HOME)
+ NVCC       := $(CUDA_ROOT)/bin/nvcc
+ CUDA_LIB   := -L$(CUDA_ROOT)/lib64 -lnvToolsExt -lcudart -lcuda -lcufft -lcublas
+ 
+@@ -78,4 +75,4 @@
+                    -gencode=arch=compute_70,code=\"sm_70,compute_70\" \
+                    -gencode=arch=compute_72,code=\"sm_72,compute_72\"
+ 
+-MPI_INC    = /opt/gfortran/openmpi-1.10.2/install/ompi-1.10.2-GFORTRAN-5.4.1/include
++MPI_INC    =  $(MPI_INCLUDE)

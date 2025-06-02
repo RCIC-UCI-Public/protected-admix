@@ -1,0 +1,17 @@
+!include vasp5.yaml
+!include rcic-module.yaml
+---
+- category: ENGINEERING
+  # reset root to NFS location where binaries will be isntalled
+  root: "{{versions.nfspath}}/{{name}}/{{version}}"
+  module:
+    prepend_path:
+      - PATH {{root}}/bin
+    setenv:
+      - "{{versions.vasp.addenv}}"
+    prereq:
+      - "{{build.base_modules}}"
+    requires:
+      - rcic-module-support
+      - "{{module.prereq}}"
+      - "{{versions.vasp.addreqs}}"

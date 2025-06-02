@@ -1,0 +1,47 @@
+--- makefile.include	2025-05-27 14:48:27.033296940 -0700
++++ ../makefile.include.vasp63.gpu	2025-05-27 13:54:53.112342278 -0700
+@@ -17,8 +17,8 @@
+ 
+ # N.B.: you might need to change the cuda-version here
+ #       to one that comes with your NVIDIA-HPC SDK
+-FC          = mpif90 -acc -gpu=cc60,cc70,cc80,cuda11.0 -mp
+-FCL         = mpif90 -acc -gpu=cc60,cc70,cc80,cuda11.0 -mp -c++libs
++FC          = mpif90 -acc -gpu=cc60,cc70,cc80,cuda11.7 -mp
++FCL         = mpif90 -acc -gpu=cc60,cc70,cc80,cuda11.7 -mp -c++libs
+ 
+ FREE        = -Mfree
+ 
+@@ -69,8 +69,8 @@
+ #NVROOT      = $(NVHPC)/Linux_x86_64/$(NVVERSION)
+ 
+ ## Improves performance when using NV HPC-SDK >=21.11 and CUDA >11.2
+-#OFLAG_IN   = -fast -Mwarperf
+-#SOURCE_IN  := nonlr.o
++OFLAG_IN   = -fast -Mwarperf
++SOURCE_IN  := nonlr.o
+ 
+ # Software emulation of quadruple precsion (mandatory)
+ QD         ?= $(NVROOT)/compilers/extras/qd
+@@ -84,16 +84,16 @@
+ 
+ # Use a separate scaLAPACK installation (optional but recommended in combination with OpenMPI)
+ # Comment out the two lines below if you want to use scaLAPACK from MKL instead
+-SCALAPACK_ROOT ?= /path/to/your/scalapack/installation
+-LLIBS_MKL   = -L$(SCALAPACK_ROOT)/lib -lscalapack -Mmkl
++#SCALAPACK_ROOT ?= /path/to/your/scalapack/installation
++#LLIBS_MKL   = -L$(SCALAPACK_ROOT)/lib -lscalapack -Mmkl
+ 
+ LLIBS      += $(LLIBS_MKL)
+ 
+ # HDF5-support (optional but strongly recommended)
+-#CPP_OPTIONS+= -DVASP_HDF5
+-#HDF5_ROOT  ?= /path/to/your/hdf5/installation
+-#LLIBS      += -L$(HDF5_ROOT)/lib -lhdf5_fortran
+-#INCS       += -I$(HDF5_ROOT)/include
++CPP_OPTIONS+= -DVASP_HDF5
++HDF5_ROOT  ?= $(HDF5_HOME)
++LLIBS      += -L$(HDF5_ROOT)/lib -lhdf5_fortran
++INCS       += -I$(HDF5_ROOT)/include
+ 
+ # For the VASP-2-Wannier90 interface (optional)
+ #CPP_OPTIONS    += -DVASP2WANNIER90

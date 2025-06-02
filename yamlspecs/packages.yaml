@@ -10,3 +10,7 @@ build:
   - qe-cuda-module
 manifest:
   - "{{build}}"
+sets:
+  - vasp5
+  - vasp6
+  - vasp63

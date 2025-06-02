@@ -1,0 +1,51 @@
+--- makefile.include	2025-05-27 13:55:59.180341346 -0700
++++ ../makefile.include.vasp63	2025-05-27 13:54:53.112342278 -0700
+@@ -56,25 +56,25 @@
+ FFLAGS     += -fallow-argument-mismatch
+ 
+ # BLAS and LAPACK (mandatory)
+-OPENBLAS_ROOT ?= /path/to/your/openblas/installation
++OPENBLAS_ROOT ?= $(OPENBLAS_HOME)
+ BLASPACK    = -L$(OPENBLAS_ROOT)/lib -lopenblas
+ 
+ # scaLAPACK (mandatory)
+-SCALAPACK_ROOT ?= /path/to/your/scalapack/installation
++SCALAPACK_ROOT ?= $(SCALAPACK_DIR)
+ SCALAPACK   = -L$(SCALAPACK_ROOT)/lib -lscalapack
+ 
+ LLIBS      += $(SCALAPACK) $(BLASPACK)
+ 
+ # FFTW (mandatory)
+-FFTW_ROOT  ?= /path/to/your/fftw/installation
++FFTW_ROOT  ?= $(FFTW_DIR)
+ LLIBS      += -L$(FFTW_ROOT)/lib -lfftw3 -lfftw3_omp
+ INCS       += -I$(FFTW_ROOT)/include
+ 
+ # HDF5-support (optional but strongly recommended)
+-#CPP_OPTIONS+= -DVASP_HDF5
+-#HDF5_ROOT  ?= /path/to/your/hdf5/installation
+-#LLIBS      += -L$(HDF5_ROOT)/lib -lhdf5_fortran
+-#INCS       += -I$(HDF5_ROOT)/include
++CPP_OPTIONS+= -DVASP_HDF5
++HDF5_ROOT  ?= $(HDF5_HOME)
++LLIBS      += -L$(HDF5_ROOT)/lib -lhdf5_fortran
++INCS       += -I$(HDF5_ROOT)/include
+ 
+ # For the VASP-2-Wannier90 interface (optional)
+ #CPP_OPTIONS    += -DVASP2WANNIER90
+@@ -82,9 +82,9 @@
+ #LLIBS          += -L$(WANNIER90_ROOT)/lib -lwannier
+ 
+ # For the fftlib library (recommended)
+-#CPP_OPTIONS+= -Dsysv
+-#FCL        += fftlib.o
+-#CXX_FFTLIB  = g++ -fopenmp -std=c++11 -DFFTLIB_THREADSAFE
+-#INCS_FFTLIB = -I./include -I$(FFTW_ROOT)/include
+-#LIBS       += fftlib
+-#LLIBS      += -ldl
++CPP_OPTIONS+= -Dsysv
++FCL        += fftlib.o
++CXX_FFTLIB  = g++ -fopenmp -std=c++11 -DFFTLIB_THREADSAFE
++INCS_FFTLIB = -I./include -I$(FFTW_ROOT)/include
++LIBS       += fftlib
++LLIBS      += -ldl

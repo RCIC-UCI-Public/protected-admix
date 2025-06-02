@@ -1,0 +1,10 @@
+!include versions-vasp5.yaml
+---
+vasp:
+  version: "6.1.2"
+  group: vasp6
+  patches:
+   - vasp.6.1.2.makefile.include.patch
+   - vasp.6.1.2.symbol.inc.patch
+  addreqs:
+  addenv:

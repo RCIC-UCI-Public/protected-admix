@@ -1,0 +1,21 @@
+!include versions.yaml
+---
+nfspath: /data/opt/apps
+scalapack: "2.1.0"
+lapack: "3.9.0"
+fftw: "3.3.8"
+vasp:
+  version: "5.4.4"
+  release: "2"
+  group: vasp5
+  mpi_name: openmpi
+  mpi_version: "4.0.3"
+  compiler_name: "gcc"
+  compiler_version: "6.5.0"
+  fftw_compiler_version: system
+  addenv: VASP_POT /data/opt/apps/vasp/potentials
+  addreqs: ucx
+  patches:
+   - vasp.5.4.4.makefile.include.patch
+   - vasp.5.4.4.symbol.inc.patch
+

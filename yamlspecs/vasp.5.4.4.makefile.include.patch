@@ -1,0 +1,53 @@
+--- makefile.include	2025-05-27 09:21:07.017574000 -0700
++++ ../makefile.include.vasp5	2025-05-27 09:15:59.210578342 -0700
+@@ -9,6 +9,9 @@
+              -Dtbdyn \
+              -Duse_shmem
+ 
++# add this line for use of newer lapack as of version >=3.6.0
++CPP_OPTIONS += -DLAPACK36
++
+ CPP        = gcc -E -P -C -w $*$(FUFFIX) >$*$(SUFFIX) $(CPP_OPTIONS)
+ 
+ FC         = mpif90
+@@ -21,17 +24,13 @@
+ OFLAG_IN   = $(OFLAG)
+ DEBUG      = -O0
+ 
+-LIBDIR     = /opt/gfortran/libs/
+-BLAS       = -L$(LIBDIR) -lrefblas
+-LAPACK     = -L$(LIBDIR) -ltmglib -llapack
+-BLACS      = 
+-SCALAPACK  = -L$(LIBDIR) -lscalapack $(BLACS)
+-
+-LLIBS      = $(SCALAPACK) $(LAPACK) $(BLAS)
+-
+-FFTW       ?= /opt/gfortran/fftw-3.3.4-GCC-5.4.1
+-LLIBS      += -L$(FFTW)/lib -lfftw3
+-INCS       = -I$(FFTW)/include
++# per current modules scalapack, lapack, openmpi(system), fftw
++BLAS       = -L$(LAPACK_DIR)/lib -lrefblas
++LAPACK     = -L$(LAPACK_DIR)/lib -ltmglib -llapack
++SCALAPACK  = -L$(SCALAPACK_DIR)/lib -lscalapack
++FFTW3      = -L$(FFTW_LIB) -lfftw3
++LLIBS      = $(SCALAPACK) $(LAPACK) $(BLAS) $(FFTW3)
++INCS       = -I$(FFTW_INC)
+ 
+ OBJECTS    = fftmpiw.o fftmpi_map.o  fftw3d.o  fft3dlib.o
+ 
+@@ -69,12 +68,12 @@
+ CXX        = g++
+ CFLAGS     = -fPIC -DADD_ -openmp -DMAGMA_WITH_MKL -DMAGMA_SETAFFINITY -DGPUSHMEM=300 -DHAVE_CUBLAS
+ 
+-CUDA_ROOT  ?= /usr/local/cuda
++# per current cuda module
++CUDA_ROOT  = $(CUDA_HOME)
+ NVCC       := $(CUDA_ROOT)/bin/nvcc
+ CUDA_LIB   := -L$(CUDA_ROOT)/lib64 -lnvToolsExt -lcudart -lcuda -lcufft -lcublas
+ 
+ GENCODE_ARCH    := -gencode=arch=compute_30,code=\"sm_30,compute_30\" \
+                    -gencode=arch=compute_35,code=\"sm_35,compute_35\" \
+                    -gencode=arch=compute_60,code=\"sm_60,compute_60\"
+-
+-MPI_INC    = /opt/gfortran/openmpi-1.10.2/install/ompi-1.10.2-GFORTRAN-5.4.1/include
++MPI_INC    =  $(MPI_INCLUDE)

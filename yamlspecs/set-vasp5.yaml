@@ -1,0 +1,9 @@
+!include packages.yaml
+---
+versions: versions-vasp5.yaml
+bootstrap:
+build:
+  - vasp5
+  - vasp5-module
+manifest:
+  - vasp5-module

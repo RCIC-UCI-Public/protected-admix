@@ -2,9 +2,10 @@
 Admix for applications whose software source is protected by license
 
 Source tarballs are held on UCI's CRSP server in the rcic-admin lab 
-under the share/Software\ Downloads/protected-admix/
+under the share/Software-Downloads/protected-admix/
 
 Simplest way forward when building is to sftp the entire protected-admix directory to the sources directory.
+Add VASP sources tarballs under vasp/. See README there for details.
 
 ###  building QE as of 2024-11-26
 
@@ -36,3 +37,15 @@ Tested 2 ways of dealing with the error:
    - create a tarball wannier90.tar.gz from external/wannier90 (from working build)
    - add wannier90.tar.gz to the sources (to add in qe.yaml)
    - during the build add/uncompress wannier90.tar.gz to qe-topdir/external/wannier90 (to add in qe.yaml)
+
+###  building VASP
+
+As of Rocky Linux 9, add building vasp RPMS based on the notes in nfsapps-admix/yamlspecs/vasp/README.<vasp-version> files.
+
+RPMS are installed only on devel host.
+Copy installed binaries to HPC3 in /data/opt/apps/vasp/ under respective version
+and chown to vasp specific group:
+
+- for vasp/5.4.4 group vasp5
+- for vasp/6.1.2 group vasp6
+- for vasp/6.3.2 group vasp63

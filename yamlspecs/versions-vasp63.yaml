@@ -1,0 +1,27 @@
+!include versions-vasp5.yaml
+---
+compiler_intel:
+  version: "2022.2"
+cudasdk: "22.9"
+hdf5: "1.13.1"
+OpenBLAS: "0.3.19"
+fftw: "3.3.10"
+vasp:
+  version: "6.3.2"
+  release: 1
+  group: vasp63
+  mpi_name: openmpi
+  mpi_version: "4.1.2"
+  compiler_name: "gcc"
+  compiler_version: "11.2.0"
+  fftw_compiler_version: "11.2.0"
+  addenv:
+    - UCX_TLS rc,mm
+    - UCX_NET_DEVICES mlx5_0:1
+  patches:
+    - vasp.6.3.2.makefile.include.patch
+  patches_gpu:
+    - vasp.6.3.2-cuda.makefile.include.patch
+vasp_gpu:
+  addenv:
+    - MKL_THREADING_LAYER INTEL

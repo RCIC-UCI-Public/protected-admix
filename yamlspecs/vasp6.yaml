@@ -1,0 +1,5 @@
+!include vasp5.yaml
+---
+- src_dir: "{{name}}.{{version}}_patched"
+  extension: tgz
+  src_tarball: "{{name}}.{{version}}_patched.{{extension}}"

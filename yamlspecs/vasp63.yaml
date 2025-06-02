@@ -1,0 +1,27 @@
+!include vasp5.yaml
+---
+- src_dir: "{{name}}.{{version}}"
+  extension: tgz
+  src_tarball: "{{name}}.{{version}}.{{extension}}"
+  baseroot: "{{pkg_defaults.app_path}}/{{name}}/{{version}}"
+  root:  "{{baseroot}}"
+  build:
+    base_modules:
+      - scalapack/{{versions.scalapack}}
+      - lapack/{{versions.lapack}}
+      - OpenBLAS/{{versions.OpenBLAS}}
+      - fftw/{{versions.fftw}}/{{compiler}}.{{compiler_version}}-{{mpi}}.{{mpi_version}}
+      - hdf5/{{versions.hdf5}}/{{compiler}}.{{compiler_version}}
+    modules:
+      - "{{build.base_modules}}"
+      - "{{mpi}}/{{mpi_version}}/{{compiler}}.{{compiler_version}}"
+    pkgmake: >
+      cp arch/makefile.include.gnu_omp makefile.include;
+      (for i in {{versions.vasp.patches}}; do patch -p0 < ../$$i ; done);
+      unset MAKEFLAGS; make DEPS=1 all
+
+#module load scalapack/2.1.0
+#module load lapack/3.9.0
+#module load OpenBLAS/0.3.19
+#module load fftw/3.3.10/gcc.11.2.0-openmpi.4.1.2
+#module load hdf5/1.13.1/gcc.11.2.0

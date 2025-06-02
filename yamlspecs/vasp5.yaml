@@ -1,0 +1,42 @@
+!include rcic-package.yaml
+!include rpm.yaml
+---
+- package: VASP  molecular dynamics
+  name: vasp
+  baserpm: "{{name}}_{{version}}_{{compiler}}_{{compiler_version}}"
+  versions: !include versions.yaml
+  version: "{{versions.vasp.version}}"
+  src_dir: "{{name}}.{{version}}"
+  mpi: "{{versions.vasp.mpi_name}}"
+  mpi_version: "{{versions.vasp.mpi_version}}"
+  compiler: "{{versions.vasp.compiler_name}}"
+  compiler_version: "{{versions.vasp.compiler_version}}"
+  vendor_source: "Source distro is provided by the group who bought the license"
+  src_tarball: "{{name}}.{{version}}_patched.{{extension}}"
+  description: |
+    The Vienna Ab initio Simulation Package (VASP). Is used for
+    atomic scale materials modelling, e.g. electronic structure
+    calculations and quantum-mechanical molecular dynamics, from
+    first principles. See https://www.vasp.at. Access to this
+    software is restricted to licensed users in {{versions.vasp.group}} group.
+    If  environment variable VASP_POT is set it specifies the
+    installation directory of pseudo-potentials, otherwise there
+    are no pseudo-potentials installd for this VASP version.
+  addfile: "{{versions.vasp.patches}}"
+  build:
+    base_modules:
+      - "{{mpi}}/{{mpi_version}}/{{compiler}}.{{compiler_version}}"
+      - fftw/{{versions.fftw}}/{{compiler}}.{{versions.vasp.fftw_compiler_version}}
+    modules:
+      - scalapack/{{versions.scalapack}}
+      - lapack/{{versions.lapack}}
+      - "{{build.base_modules}}"
+    pkgmake: >
+      cp arch/makefile.include.linux_gnu makefile.include;
+      (for i in {{versions.vasp.patches}}; do patch -p0 < ../$$i ; done);
+      unset MAKEFLAGS; make all
+  install:
+     makeinstall: >
+       mkdir -p $(ROOT){{root}}/bin;
+       chmod -R o-rx $(ROOT){{root}}/bin;
+       $(INSTALL) -m 750 bin/* $(ROOT)/{{root}}/bin

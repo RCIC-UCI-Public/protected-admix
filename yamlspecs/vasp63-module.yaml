@@ -1,0 +1,20 @@
+!include vasp63.yaml
+!include rcic-module.yaml
+---
+- category: ENGINEERING
+  root: "{{versions.nfspath}}/{{name}}/{{version}}"
+  baserpm: "{{name}}_{{version}}_{{compiler}}_{{compiler_version}}"
+  module:
+    path: "{{mod_defaults.path}}/{{version}}"
+    logname: "{{name}}/{{version}}/{{compiler}}.{{compiler_version}}"
+    name: "{{compiler}}.{{compiler_version}}"
+    prepend_path:
+      - PATH {{root}}/bin
+    setenv:
+      - "{{versions.vasp.addenv}}"
+    prereq:
+      - "{{build.base_modules}}"
+    requires:
+      - rcic-module-support
+      - "{{module.prereq}}"
+      - "{{versions.vasp.addreqs}}"
