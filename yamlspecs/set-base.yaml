@@ -1,0 +1,10 @@
+!include packages.yaml
+---
+versions: versions-base.yaml
+build:
+  - rosetta
+  - rosetta-module
+  - qe
+  - qe-module
+  - qe-cuda
+  - qe-cuda-module

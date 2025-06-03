@@ -1,0 +1,14 @@
+!include site.yaml
+!include updates8.yaml
+---
+admix: protected-admix
+rosetta:
+  version: "3.13"
+  srcdir: "_src_2021.16.61629_bundle"
+  tarext: "_src_3.13_bundle.tgz"
+  march: "skylake"
+  sharedpath: /dfs8/commondata
+qe:
+  version: "7.1"
+  cudasdk: "22.9"
+scalapack: "2.1.0"
