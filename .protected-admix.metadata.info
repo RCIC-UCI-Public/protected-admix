@@ -1,0 +1,14 @@
+
+This is for a reference. These files are kept in a specifica CRSP location
+and cannot be directly downloaded with "make download".
+Once sftp command is finished to downlaod them check their sizes vs this info
+
+b2788cfcc77a25c234f3c9186038a659eed60c3d  sources/CeO2.tar.gz
+ce0952ca32b0c947648e03e3e4c67d4577b5b375  sources/patch.5.4.4.16052018.gz
+b748ec8818d6c597faa9a96e4061572717ea140d  sources/qe-7.1.tar.gz
+395a6f4ad93b89720ab35792ccf05730d7c0df91  sources/rosetta_src_3.13_bundle.tgz
+62ac5203c130c6faaceb80daa9be0ca9b41ef6e2  sources/vasp.5.4.4.tar.gz
+1bdd4d77e5c0bd1504bebf55dbca95e6e24bc1d6  sources/vasp.5.4.4_patched.tar.gz
+4bf4dd83838b1064d3b6b553b6c01a8ffd2f3711  sources/vasp.6.1.2_patched.tgz
+9a6d91fe02d1a4443f8dfd5eabbfde9094189530  sources/vasp.6.3.2.tgz
+e40c827c91fba0ab47ad57d4eb1365c3e30cbc90  sources/wannier90.tar.gz
