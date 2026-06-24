@@ -8,5 +8,5 @@ manifest:
 sets:
   - base
   - vasp5
-  - vasp6
+  - !OScmp "<, 9.8, vasp6,"
   - vasp63
