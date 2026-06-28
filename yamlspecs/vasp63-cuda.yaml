@@ -3,6 +3,8 @@
 - package: vasp-cuda
   baserpm: "{{name}}_{{version}}_cudasdk_{{versions.cudasdk}}"
   root: "{{parent}}/{{version}}/cuda"
+  opts10: !OScmp ">=,10,1,0"
+  tchain:  --gcc-toolchain={{pkg_defaults.app_path}}/{{versions.vasp.compiler_name}}/{{versions.vasp.compiler_version}}
   addfile:
     - "{{versions.vasp.patches_gpu}}" 
     - filter-requires-vasp63-cuda.sh 
@@ -16,6 +18,15 @@
     pkgmake: >
       cp arch/makefile.include.nvhpc_ompi_mkl_omp_acc makefile.include;
       (for i in {{versions.vasp.patches_gpu}}; do patch -p0 < ../$$i ; done);
+      if [ {{opts10}} == 1 ]; then \
+          echo 'CPP = nvfortran -Mpreprocess -Mfree -Mextend -E $$(CPP_OPTIONS) $$*$$(FUFFIX) > $$*$$(SUFFIX) {{tchain}}' >> makefile.include; \
+          echo 'FC  = mpif90 -acc -gpu=cc60,cc70,cc80,cuda11.7 -c++libs -mp {{tchain}}' >> makefile.include; \
+          echo 'FCL = mpif90 -acc -gpu=cc60,cc70,cc80,cuda11.7 -c++libs -mp {{tchain}}' >> makefile.include; \
+          echo 'CC  = nvc {{tchain}}' >> makefile.include; \
+          echo 'CXX = nvc++ {{tchain}}' >> makefile.include; \
+          makelocalrc -d . -x -gcc $$GCC_INSTALL_PREFIX/bin/gcc -gpp $$GCC_INSTALL_PREFIX/bin/g++; \
+          export NVLOCALRC=`pwd`/localrc; \
+      fi;
       unset MAKEFLAGS; make DEPS=1 all
   requires:
       - cudasdk/{{versions.cudasdk}}
